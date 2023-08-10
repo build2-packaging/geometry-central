@@ -1,0 +1,2 @@
+ln -s $src_base/spot.ply spot.ply;
+$* >- == 0

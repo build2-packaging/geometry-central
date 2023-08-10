@@ -1,0 +1,6 @@
+import libs = libgeometrycentral%lib{geometrycentral}
+import libs += gtest%lib{gtest}
+
+exe{tests}: {hxx ixx txx cxx}{**} $libs testscript
+
+cxx.poptions =+ "-I$src_base" -DGC_TEST_ASSETS_ABS_PATH="\"$regex.replace($src_root, '\\', '\\\\')/assets\""

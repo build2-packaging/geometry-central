@@ -1,0 +1,3 @@
+import geometrycentral = libgeometrycentral%lib{geometrycentral}
+./: exe{basic-tests}: {hxx ixx txx cxx}{**} $geometrycentral testscript
+./: file{spot.ply}

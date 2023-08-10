@@ -1,0 +1,53 @@
+libs = # Interface dependencies.
+import libs += Eigen%lib{Eigen}
+import libs += nanoflann%lib{nanoflann}
+import libs += libnanort%lib{nanort}
+import libs += happly%lib{happly}
+
+# Public headers.
+#
+pub = [dir_path] ../include/geometrycentral/
+include $pub
+pub_hdrs = $($pub/ pub_hdrs)
+lib{geometrycentral}: $pub/{$pub_hdrs}
+
+# Private headers and sources as well as dependencies.
+#
+lib{geometrycentral}: $libs \
+  utilities/{hxx ixx txx cxx}{* -unit_vector3} \
+  numerical/{hxx ixx txx cxx}{*} \
+  pointcloud/{hxx ixx txx cxx}{*} \
+  surface/{hxx ixx txx cxx}{* -detect_symmetry -mesh_ray_tracer}
+
+# Build options.
+#
+src_pfx_inc = [dir_path] $src_root/include/
+src_pfx_src = [dir_path] $src_root/src/
+cxx.poptions =+ "-I$src_pfx_src" "-I$src_pfx_inc" -DNOMINMAX -D_USE_MATH_DEFINES
+
+# {hbmia obja}{*}: cxx.poptions += -DGEOMETRYCENTRAL_STATIC_BUILD
+# {hbmis objs}{*}: cxx.poptions += -DGEOMETRYCENTRAL_SHARED_BUILD
+
+# Export options.
+#
+lib{geometrycentral}:
+{
+  cxx.export.poptions = "-I$src_pfx_inc" -DNOMINMAX -D_USE_MATH_DEFINES
+  cxx.export.libs = $libs
+}
+
+# liba{geometrycentral}: cxx.export.poptions += -DGEOMETRYCENTRAL_STATIC
+# libs{geometrycentral}: cxx.export.poptions += -DGEOMETRYCENTRAL_SHARED
+
+# For pre-releases use the complete version to make sure they cannot be used
+# in place of another pre-release or the final version. See the version module
+# for details on the version.* variable values.
+#
+# if $version.pre_release
+#   lib{geometrycentral}: bin.lib.version = "-$version.project_id"
+# else
+#   lib{geometrycentral}: bin.lib.version = "-$version.major.$version.minor"
+
+# Don't install private headers.
+#
+{hxx ixx txx}{*}: install = false

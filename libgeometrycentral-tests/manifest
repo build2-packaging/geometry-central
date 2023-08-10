@@ -1,0 +1,23 @@
+: 1
+name: libgeometrycentral-tests
+version: 0.0.1
+type: bin
+language: c++
+project: geometry-central
+summary: Tests for Geometry Central
+license: MIT
+
+description-file: README.md
+url: https://geometry-central.net/
+doc-url: https://geometry-central.net/
+src-url: https://github.com/nmwsharp/geometry-central
+email: nmwsharp@gmail.com
+
+package-description-file: PACKAGE-README.md
+package-url: https://github.com/build2-packaging/geometry-central
+package-email: packaging@build2.org
+
+depends: * build2 >= 0.16.0
+depends: * bpkg >= 0.16.0
+
+depends: gtest ^ 1.10.0
