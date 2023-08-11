@@ -42,14 +42,23 @@ Add the respective dependency in your project's `manifest` file to make the pack
 
 The library to use Geometry Central can be imported by the following declaration in a `buildfile`.
 
-    import geometry-central = libgeometrycentral%lib{geometrycentral}
+    import geometrycentral = libgeometrycentral%lib{geometrycentral}
 
 ## Configuration
 There are no configuration options available.
 
 ## Issues and Notes
-- Naming of project and library
-- Symbolic Links
+- Naming Scheme:
+    + Repository Name: Same as the upstream repository: `geometry-central`
+    + Project Name: Same as the upstream repository and the project name given in the upstream CMake file: `geometry-central`
+    + Library Name: To be consistent with programming practices, we wanted the library name to be the name of the upstream include folder. So, `geometrycentral` without a dash.
+    + Package Name: According to the recommended build2 practices, the respective library package gets the prefix `lib` and its name becomes `libgeometrycentral`.
+- As Geometry Central provides many include and source files, symbolic links to their folders and not the source files itself are used. Should files be added in the future to those folders, they will be automatically included in the build process. On the other hand, we now have to blacklist some files. So, check this blacklisting for future updates.
+- Currently, the optional dependency on [SuiteSparse](https://people.engr.tamu.edu/davis/suitesparse.html) is not supported because it has not been provided as a build2 package.
+- Currently, building the DLL on Windows-based target configurations is not supported. The upstream project uses a special CMake function to automatically export all symbols of the library without the need to specify any export macros. This involves parsing `.obj` files and writing a list of all existing symbols that are then fed to the linker. See [stackoverflow: Export all symbols when creating a DLL](https://stackoverflow.com/questions/225432/export-all-symbols-when-creating-a-dll) and [CMake Documentation: WINDOWS_EXPORT_ALL_SYMBOLS](https://cmake.org/cmake/help/latest/prop_tgt/WINDOWS_EXPORT_ALL_SYMBOLS.html) for more information. Is there any analog way to do it in build2?
+- On Linux-based target configurations, `clang-16` generates an error in the standard library for `std::tuple` when using the Eigen library. That seems not to be a bug in Geometry Central or this package: `include/c++/13/tuple:691:2: error: pack expansion contains parameter pack '_UTypes' that has a different length (1 vs. 2) from outer parameter packs: using __convertible = __and_<is_convertible<_UTypes, _Types>...>;`
+- The library can be compiled with Emscripten. However, some file-based tests seem to fail.
+- A lot of warnings are triggered by the Eigen library. Maybe we should restrict the scope of warnings.
 
 ## Contributing
 Thanks in advance for your help and contribution to keep this package up-to-date.
