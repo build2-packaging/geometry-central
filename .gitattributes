@@ -17,3 +17,17 @@
 # Use `binary` to make sure certain files are never auto-detected as text.
 #
 #*.png binary
+
+# See: https://build2.org/article/symlinks.xhtml#windows
+#
+libgeometrycentral/include/geometrycentral/numerical symlink=dir
+libgeometrycentral/include/geometrycentral/pointcloud symlink=dir
+libgeometrycentral/include/geometrycentral/surface symlink=dir
+libgeometrycentral/include/geometrycentral/utilities symlink=dir
+
+libgeometrycentral/src/numerical symlink=dir
+libgeometrycentral/src/pointcloud symlink=dir
+libgeometrycentral/src/surface symlink=dir
+libgeometrycentral/src/utilities symlink=dir
+
+libgeometrycentral-tests/assets symlink=dir
