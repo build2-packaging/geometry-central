@@ -12,8 +12,11 @@ pub_hdrs = $($pub/ pub_hdrs)
 lib{geometrycentral}: $pub/{$pub_hdrs}
 
 # Private headers and sources as well as dependencies.
+# As Geometry Central does not use any export header functionality,
+# we need a utility library to generate '.def' files
+# for automatic DLL symbol exportation on Windows.
 #
-lib{geometrycentral}: $libs \
+lib{geometrycentral}: libul{geometrycentral}: $libs \
   utilities/{hxx ixx txx cxx}{* -unit_vector3} \
   numerical/{hxx ixx txx cxx}{*} \
   pointcloud/{hxx ixx txx cxx}{*} \
@@ -23,21 +26,30 @@ lib{geometrycentral}: $libs \
 #
 src_pfx_inc = [dir_path] $src_root/include/
 src_pfx_src = [dir_path] $src_root/src/
-cxx.poptions =+ "-I$src_pfx_src" "-I$src_pfx_inc" -DNOMINMAX -D_USE_MATH_DEFINES
-
-# {hbmia obja}{*}: cxx.poptions += -DGEOMETRYCENTRAL_STATIC_BUILD
-# {hbmis objs}{*}: cxx.poptions += -DGEOMETRYCENTRAL_SHARED_BUILD
+cxx.poptions =+ "-I$src_pfx_src" "-I$src_pfx_inc"
 
 # Export options.
 #
 lib{geometrycentral}:
 {
-  cxx.export.poptions = "-I$src_pfx_inc" -DNOMINMAX -D_USE_MATH_DEFINES
+  cxx.export.poptions = "-I$src_pfx_inc"
   cxx.export.libs = $libs
 }
 
-# liba{geometrycentral}: cxx.export.poptions += -DGEOMETRYCENTRAL_STATIC
-# libs{geometrycentral}: cxx.export.poptions += -DGEOMETRYCENTRAL_SHARED
+if ($cxx.target.class == 'windows')
+{
+  cxx.poptions += -DNOMINMAX -D_USE_MATH_DEFINES
+  lib{geometrycentral}: cxx.export.poptions += -DNOMINMAX -D_USE_MATH_DEFINES
+}
+
+# Automatic DLL Symbol Exporting
+#
+# See: https://build2.org/build2/doc/build2-build-system-manual.xhtml#cc-auto-symexport
+#
+libs{geometrycentral}: def{geometrycentral}: include = ($cxx.target.system == 'win32-msvc')
+def{geometrycentral}: libul{geometrycentral}
+if ($cxx.target.system == 'mingw32')
+  cxx.loptions += -Wl,--export-all-symbols
 
 # For pre-releases use the complete version to make sure they cannot be used
 # in place of another pre-release or the final version. See the version module
