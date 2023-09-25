@@ -21,7 +21,7 @@ depends: * build2 >= 0.16.0
 depends: * bpkg >= 0.16.0
 
 depends: Eigen ^3.3.0
-depends: libnanort
+depends: libnanort ^0.0.1
 depends: nanoflann ~1.3.2
 depends: happly ^0.0.2
 
