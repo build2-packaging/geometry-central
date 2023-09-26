@@ -1,5 +1,11 @@
-libs = # Interface dependencies.
-import libs += Eigen%lib{Eigen}
+# Default Target
+# For automatic symbol exportation, a utility library needs to be built.
+#
+./: lib{geometrycentral}: libul{geometrycentral}
+
+# Dependency Imports
+#
+import libs = Eigen%lib{Eigen}
 import libs += nanoflann%lib{nanoflann}
 import libs += libnanort%lib{nanort}
 import libs += happly%lib{happly}
@@ -9,14 +15,14 @@ import libs += happly%lib{happly}
 pub = [dir_path] ../include/geometrycentral/
 include $pub
 pub_hdrs = $($pub/ pub_hdrs)
-lib{geometrycentral}: $pub/{$pub_hdrs}
+libul{geometrycentral}: $pub/{$pub_hdrs}
 
 # Private headers and sources as well as dependencies.
 # As Geometry Central does not use any export header functionality,
 # we need a utility library to generate '.def' files
 # for automatic DLL symbol exportation on Windows.
 #
-lib{geometrycentral}: libul{geometrycentral}: $libs \
+libul{geometrycentral}: $libs \
   utilities/{hxx ixx txx cxx}{* -unit_vector3} \
   numerical/{hxx ixx txx cxx}{*} \
   pointcloud/{hxx ixx txx cxx}{*} \
@@ -27,6 +33,15 @@ lib{geometrycentral}: libul{geometrycentral}: $libs \
 src_pfx_inc = [dir_path] $src_root/include/
 src_pfx_src = [dir_path] $src_root/src/
 cxx.poptions =+ "-I$src_pfx_src" "-I$src_pfx_inc"
+#
+# Automatic DLL Symbol Exporting
+#
+# See: https://build2.org/build2/doc/build2-build-system-manual.xhtml#cc-auto-symexport
+#
+libs{geometrycentral}: def{geometrycentral}: include = ($cxx.target.system == 'win32-msvc')
+def{geometrycentral}: libul{geometrycentral}
+if ($cxx.target.system == 'mingw32')
+  cxx.loptions += -Wl,--export-all-symbols
 
 # Export options.
 #
@@ -41,15 +56,6 @@ if ($cxx.target.class == 'windows')
   cxx.poptions += -DNOMINMAX -D_USE_MATH_DEFINES
   lib{geometrycentral}: cxx.export.poptions += -DNOMINMAX -D_USE_MATH_DEFINES
 }
-
-# Automatic DLL Symbol Exporting
-#
-# See: https://build2.org/build2/doc/build2-build-system-manual.xhtml#cc-auto-symexport
-#
-libs{geometrycentral}: def{geometrycentral}: include = ($cxx.target.system == 'win32-msvc')
-def{geometrycentral}: libul{geometrycentral}
-if ($cxx.target.system == 'mingw32')
-  cxx.loptions += -Wl,--export-all-symbols
 
 # For pre-releases use the complete version to make sure they cannot be used
 # in place of another pre-release or the final version. See the version module
