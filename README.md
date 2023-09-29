@@ -39,11 +39,11 @@ There are no configuration options available.
     + Library Name: To be consistent with programming practices, we wanted the library name to be the name of the upstream include folder. So, `geometrycentral` without a dash.
     + Package Name: According to the recommended build2 practices, the respective library package gets the prefix `lib` and its name becomes `libgeometrycentral`.
 - As Geometry Central provides many include and source files, symbolic links to their folders and not the source files itself are used. Should files be added in the future to those folders, they will be automatically included in the build process. On the other hand, we now have to blacklist some files. So, check this blacklisting for future updates.
-- Currently, the optional dependency on [SuiteSparse](https://people.engr.tamu.edu/davis/suitesparse.html) is not supported because it has not been provided as a build2 package.
-- Currently, building the DLL on Windows-based target configurations is not supported. The upstream project uses a special CMake function to automatically export all symbols of the library without the need to specify any export macros. This involves parsing `.obj` files and writing a list of all existing symbols that are then fed to the linker. See [stackoverflow: Export all symbols when creating a DLL](https://stackoverflow.com/questions/225432/export-all-symbols-when-creating-a-dll) and [CMake Documentation: WINDOWS_EXPORT_ALL_SYMBOLS](https://cmake.org/cmake/help/latest/prop_tgt/WINDOWS_EXPORT_ALL_SYMBOLS.html) for more information. Is there any analog way to do it in build2?
-- On Linux-based target configurations, `clang-16` generates an error in the standard library for `std::tuple` when using the Eigen library. That seems not to be a bug in Geometry Central or this package: `include/c++/13/tuple:691:2: error: pack expansion contains parameter pack '_UTypes' that has a different length (1 vs. 2) from outer parameter packs: using __convertible = __and_<is_convertible<_UTypes, _Types>...>;`
-- The library can be compiled with Emscripten. However, some file-based tests seem to fail.
+- Currently, the optional dependency on [SuiteSparse](https://people.engr.tamu.edu/davis/suitesparse.html) is not supported because it has not been provided as a build2 package, yet. We might compensate that by making it a dependency that shall be fulfilled by the system.
 - A lot of warnings are triggered by the Eigen library. Maybe we should restrict the scope of warnings.
+- Currently, the library cannot be compiled with Clang 16 when used with `libstdc++` from GCC and not with `libc++`. The error originates from using Eigen and has nothing to do with Geometry Central.
+- The library can be compiled with Emscripten. However, some file-based tests seem to fail.
+- The library can be compiled on Windows with GCC, Clang, and MSVC. However, some tests fail for MSVC-based targets.
 
 ## Contributing
 Thanks in advance for your help and contribution to keep this package up-to-date.
