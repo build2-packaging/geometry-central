@@ -1,0 +1,8 @@
+: 1
+name: libgeometrycentral-tests
+version: 0.0.1+1
+type: bin
+language: c++
+project: geometry-central
+summary: Tests for Geometry Central
+license: MIT

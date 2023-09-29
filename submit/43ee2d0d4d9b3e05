@@ -1,0 +1,10 @@
+: 1
+name: libgeometrycentral
+version: 0.0.1+1
+type: lib
+language: c++
+project: geometry-central
+summary: Geometry Central is a modern C++ library of data structures and\
+ algorithms for geometry processing, with a particular focus on surface\
+ meshes.
+license: MIT
