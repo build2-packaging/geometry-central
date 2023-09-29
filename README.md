@@ -1,26 +1,11 @@
-<h1 align="center">
-    build2 Package for Geometry Central
-</h1>
+# build2 Package for Geometry Central
 
-<p align="center">
-    This project builds and defines the build2 package for <a href="https://github.com/nmwsharp/geometry-central">Geometry Central</a>.
-    Geometry Central is a modern C++ library of data structures and algorithms for geometry processing, with a particular focus on surface meshes.
-</p>
+[Geometry Central](https://github.com/nmwsharp/geometry-central">Geometry) is a modern C++ library of data structures and algorithms for geometry processing, with a particular focus on surface meshes.
 
-<p align="center">
-    <a href="https://github.com/nmwsharp/geometry-central">
-        <img src="https://img.shields.io/website/https/github.com/nmwsharp/geometry-central.svg?down_message=offline&label=Official&style=for-the-badge&up_color=blue&up_message=online">
-    </a>
-    <a href="https://github.com/build2-packaging/geometry-central">
-        <img src="https://img.shields.io/website/https/github.com/build2-packaging/geometry-central.svg?down_message=offline&label=build2&style=for-the-badge&up_color=blue&up_message=online">
-    </a>
-    <a href="https://cppget.org/libgeometrycentral">
-        <img src="https://img.shields.io/website/https/cppget.org/libgeometrycentral.svg?down_message=offline&label=cppget.org&style=for-the-badge&up_color=blue&up_message=online">
-    </a>
-    <a href="https://queue.cppget.org/libgeometrycentral">
-        <img src="https://img.shields.io/website/https/queue.cppget.org/libgeometrycentral.svg?down_message=empty&down_color=blue&label=queue.cppget.org&style=for-the-badge&up_color=orange&up_message=running">
-    </a>
-</p>
+[![Official](https://img.shields.io/website/https/github.com/nmwsharp/geometry-central.svg?down_message=offline&label=Official&style=for-the-badge&up_color=blue&up_message=online)](https://github.com/nmwsharp/geometry-central)
+[![build2](https://img.shields.io/website/https/github.com/build2-packaging/geometry-central.svg?down_message=offline&label=build2&style=for-the-badge&up_color=blue&up_message=online)](https://github.com/build2-packaging/geometry-central)
+[![cppget.org](https://img.shields.io/website/https/cppget.org/libgeometrycentral.svg?down_message=offline&label=cppget.org&style=for-the-badge&up_color=blue&up_message=online)](https://cppget.org/libgeometrycentral)
+[![queue.cppget.org](https://img.shields.io/website/https/queue.cppget.org/libgeometrycentral.svg?down_message=empty&down_color=blue&label=queue.cppget.org&style=for-the-badge&up_color=orange&up_message=running)](https://queue.cppget.org/libgeometrycentral)
 
 ## Usage
 As Geometry Central does not provide any versioning scheme, make sure to add the alpha section of the `cppget.org` repository to your project's `repositories.manifest` to be able to fetch this package.
@@ -38,9 +23,9 @@ If the alpha section of `cppget.org` is not an option then add this Git reposito
 
 Add the respective dependency in your project's `manifest` file to make the package available for import.
 
-    depends: libgeometrycentral ^ 0.0.1
+    depends: libgeometrycentral ^0.0.1
 
-The library to use Geometry Central can be imported by the following declaration in a `buildfile`.
+The library can then be imported by the following declaration in a `buildfile`.
 
     import geometrycentral = libgeometrycentral%lib{geometrycentral}
 
