@@ -17,8 +17,8 @@ package-description-file: PACKAGE-README.md
 package-url: https://github.com/build2-packaging/geometry-central
 package-email: packaging@build2.org
 
-depends: * build2 >= 0.16.0
-depends: * bpkg >= 0.16.0
+depends: * build2 >= 0.17.0-
+depends: * bpkg >= 0.17.0-
 
 depends: Eigen ^3.3.0
 depends: libnanort ^0.0.1
